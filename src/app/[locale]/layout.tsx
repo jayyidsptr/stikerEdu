@@ -8,7 +8,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { GameProvider, useGame } from '@/context/game-context';
 import AppLayout from '@/components/layout/app-layout';
 import type { Locale } from '@/config/i18n.config';
-import { I18nClientProvider } from '@/context/i18n-client-context'; 
+// import { I18nClientProvider } from '@/context/i18n-client-context'; 
 import SplashScreen from '@/components/splash/splash-screen';
 
 
@@ -43,18 +43,18 @@ function AppInitializer({ children, locale }: { children: ReactNode; locale: Loc
   }, [showSplash, isAuthenticated, isAuthLoading, pathname, router, locale]);
 
   if (showSplash || isAuthLoading) {
-    return <SplashScreen />; // Removed locale prop as it's not used in SplashScreen
+    return <SplashScreen />;
   }
 
   if (!isAuthenticated && pathname !== `/${locale}/auth`) {
-    return <SplashScreen />; // Removed locale prop
+    return <SplashScreen />;
   }
   
   if (pathname === `/${locale}/auth`) {
      return <>{children}</>; 
   }
 
-  return <AppLayout locale={locale}>{children}</AppLayout>;
+  return <AppLayout>{children}</AppLayout>;
 }
 
 export default function RootLayout({ children, params: { locale } }: RootLayoutProps) {
@@ -88,14 +88,14 @@ export default function RootLayout({ children, params: { locale } }: RootLayoutP
         <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Chakra+Petch:wght@400;700&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body antialiased min-h-screen flex flex-col bg-background">
-        <I18nClientProvider locale={locale}>
+        {/* <I18nClientProvider locale={locale}> */}
           <GameProvider>
             <AppInitializer locale={locale}>
               {children}
             </AppInitializer>
             <Toaster />
           </GameProvider>
-        </I18nClientProvider>
+        {/* </I18nClientProvider> */}
       </body>
     </html>
   );
