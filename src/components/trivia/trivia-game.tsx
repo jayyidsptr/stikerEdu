@@ -75,7 +75,7 @@ export default function TriviaGame() {
     });
 
     if (result.correct) {
-      setScore(prev => prev + COINS_PER_CORRECT_ANSWER_TRIVIA);
+      setScore(prev => prev + COINS_PER_CORRECT_ANSWER);
     }
   };
 
@@ -92,7 +92,7 @@ export default function TriviaGame() {
     await startTriviaSession();
   }
 
-  if (isFetchingTrivia) {
+  if (!isClientReady) {
     return (
       <Card className="w-full max-w-2xl mx-auto shadow-xl text-center p-8">
         <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto mb-4" />
@@ -101,7 +101,17 @@ export default function TriviaGame() {
     );
   }
 
-  if (isClientReady && isTriviaLocked()) {
+
+  if (isFetchingTrivia && !triviaSessionActive) {
+    return (
+      <Card className="w-full max-w-2xl mx-auto shadow-xl text-center p-8">
+        <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto mb-4" />
+        <p className="text-muted-foreground">Memuat pertanyaan kuis...</p>
+      </Card>
+    );
+  }
+
+  if (isTriviaLocked()) {
     return (
       <Card className="w-full max-w-2xl mx-auto shadow-xl text-center p-8">
         <Lock className="h-12 w-12 text-destructive mx-auto mb-4" />
@@ -124,8 +134,9 @@ export default function TriviaGame() {
         <CardDescription className="text-muted-foreground mt-2 mb-6">
           Jawab {getTriviaQuestionCount()} pertanyaan dan uji pengetahuanmu! Kamu punya {INITIAL_TRIVIA_LIVES} nyawa.
         </CardDescription>
-        <Button onClick={handleStartSession} size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
-          <Play className="mr-2 h-5 w-5" /> Mulai Kuis
+        <Button onClick={handleStartSession} size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground" disabled={isFetchingTrivia}>
+          {isFetchingTrivia ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : <Play className="mr-2 h-5 w-5" />}
+          {isFetchingTrivia ? "Memuat..." : "Mulai Kuis" }
         </Button>
       </Card>
     );
