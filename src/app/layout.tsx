@@ -7,7 +7,7 @@ import ClientLayoutWrapper from './client-layout-wrapper';
 export const metadata: Metadata = {
   title: 'EduSticker',
   description: 'Collect stickers and learn with trivia!',
-  // Viewport definition removed from here
+  manifest: '/manifest.json', // Pastikan path ini benar
 };
 
 export const viewport: Viewport = { // Added separate viewport export
@@ -21,6 +21,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <head>
         {/* Preconnect and font links are kept here for simplicity,
             though next/font is generally recommended for new projects. */}
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="EduSticker" />
+        <link rel="apple-touch-icon" href="/stikerEdu.png" /> {/* Contoh path ikon */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Chakra+Petch:wght@400;700&display=swap" rel="stylesheet" />
